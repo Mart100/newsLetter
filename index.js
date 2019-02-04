@@ -40,7 +40,7 @@ app.get('/update', (req, res, next) => {
 
 
 app.listen(process.env.PORT || port, () => {
-  console.log('Listening at: ' + this.address())
+  console.log('Server started')
 })
 
 // connect database
