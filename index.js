@@ -18,13 +18,20 @@ app.get('/email', async (req, res, next) => {
   Thanks for subscribing to my newsletter. From now on you will receive a new email everytime I post a new project / have a big update on a project.
   If you did not signup for this at http://martve.site please click the link below to unsubscribe
   `
+  // check if email givin is an actual email
+  let re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+  if(re.test(email) == false) return res.send('NOT_EMAIL')
+
+
+  // check if email is already in database
   let getToken = await database.getTokenWithEmail(email) 
-  if(getToken == undefined) {
-    database.addEmail(email)
-    mailing.sendEmail(email, text, nodemailer)
-    res.send('SUCCESS')
-  }
-  else console.log('ERR DUPLICATE EMAIL: <'+email+'>')
+  if(getToken != undefined) return res.send('EMAIL_DUPLICATE')
+
+  // SUCCESS
+  database.addEmail(email)
+  mailing.sendEmail(email, text, nodemailer)
+  res.send('SUCCESS')
+
 })
 
 // Listen for update
