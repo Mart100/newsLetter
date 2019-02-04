@@ -1,41 +1,55 @@
 let express = require('express')
 let cors = require('cors')
 const nodemailer = require('nodemailer')
+const mailing = require('./mailing.js')
+const database = require('./database.js')
+var admin = require('firebase-admin')
 require('dotenv').config({path: './secrets.env'})
 var app = express()
 let port = 3100
-const { Client } = require('pg');
-
 
 app.use(cors())
 
 // Listen for new emails
-app.get('/email', (req, res, next) => {
+app.get('/email', async (req, res, next) => {
   let email = req.url.split('?')[1]
-  console.log(req.url)
   let text = `
   Hello,<br>
   Thanks for subscribing to my newsletter. From now on you will receive a new email everytime I post a new project / have a big update on a project.
   If you did not signup for this at http://martve.site please click the link below to unsubscribe
   `
-  sendEmail(email, text)
-  addEmail(email)
+  let getToken = await database.getTokenWithEmail(email) 
+  if(getToken == undefined) {
+    database.addEmail(email)
+    mailing.sendEmail(email, text, nodemailer)
+  }
+  else console.log('ERR DUPLICATE EMAIL: <'+email+'>')
 })
 
 // Listen for update
-app.get('/update', (req, res, next) => {
+app.get('/update', async (req, res, next) => {
   let data = req.url.split('?')[1]
-  let password = data.split('&')[0].replace('password=', '')
+  let password = data.split('&')[0].replace('password=', '').trim()
   let text = data.split('&')[1].replace('text=', '')
 
   // If password is correct. Send emails
-  if(password == process.env.PASSWORD) {
-    let emails = getEmails()
-    for(let email of emails) sendEmail(email, text)
+  if(password == process.env.PASSWORD.trim()) {
+    let emails = await database.getEmails()
+    console.log(emails)
+    for(let token in emails) {
+      let email = emails[token]
+      mailing.sendEmail(email, text, nodemailer)
+    }
   } 
   // else wrong password
-  else console.log('WRONG PASSWORD')
+  else console.log('WRONG PASSWORD: <'+password+'>   CORRECT: <'+process.env.PASSWORD+'>')
   console.log(req.url)
+})
+
+// listen for unsubscribe
+app.get('/unsubscribe', (req, res, next) => {
+  let token = req.url.split('?')[1]
+  database.removeEmail(token)
 })
 
 
@@ -43,60 +57,8 @@ app.listen(process.env.PORT || port, () => {
   console.log('Server started')
 })
 
-// connect database
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-})
+database.connect(admin, process.env.private_key)
 
-client.connect()
-function addEmail(email) {
-  let sql = `INSERT INTO emails (email)
-            VALUES (${email});`
-    client.query(sql, (err, res) => {
-    if (err) throw err
-    for(let row of res.rows) console.log(JSON.stringify(row))
-    return res.rows
-    client.end()
-  })
-}
-
-function getEmails() {
-  client.query('SELECT email FROM emails', (err, res) => {
-    if (err) throw err
-    for(let row of res.rows) console.log(JSON.stringify(row))
-    return res.rows
-    client.end()
-  })
-}
-
-function sendEmail(email, text) {
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: 'martssitebot@gmail.com',
-      pass: process.env.mailPass
-    }
-  })
-
-  text += (`<a href="https://news-letter.herokuapp.com/unsubscribe?${email}">Click here to unsubscribe</a>`)
-
-  // mail Options
-  let mailOptions = {
-    from: '"MartBot" <Martssitebot@gmail.com>', // sender address
-    to: email, // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: text, // plain text body
-    html: text // html body
-  };
-
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, (err, info) => {
-    if(err) return console.log(error);
-    console.log('Message sent: %s', info.messageId)
-  })
-}
 
 /*
 CLIENT GET REQUESTS
