@@ -32,7 +32,9 @@ app.get('/update', (req, res, next) => {
   if(password == process.env.PASSWORD) {
     let emails = getEmails()
     for(let email of emails) sendEmail(email, text)
-  }
+  } 
+  // else wrong password
+  else console.log('WRONG PASSWORD')
   console.log(req.url)
 })
 
