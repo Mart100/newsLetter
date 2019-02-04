@@ -85,7 +85,7 @@ function sendEmail(email, text) {
   // mail Options
   let mailOptions = {
     from: '"MartBot" <Martssitebot@gmail.com>', // sender address
-    to: to, // list of receivers
+    to: email, // list of receivers
     subject: 'Hello ✔', // Subject line
     text: mailText, // plain text body
     html: mailText // html body
