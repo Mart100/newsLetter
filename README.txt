@@ -1,0 +1,1 @@
+API. for sending my latest projects to those who subscribed on my main site
