@@ -6,7 +6,7 @@ module.exports = {
     console.log('ADDED <'+email+'> TO DATABASE')
   },
   async removeEmail(token) {
-    let email = this.getEmailByToken(token)
+    let email = await this.getEmailByToken(token)
     console.log('REMOVED <'+email+'> FROM DATABASE')
     database.ref('emails/'+token).remove()
   },
@@ -19,7 +19,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       database.ref('emails/'+token).once('value').then((snapshot) => { resolve(snapshot.val()) })
     })
-  }
+  },
   async getTokenWithEmail(email) {
     let emails = await this.getEmails()
     return Object.keys(emails).find(key => emails[key] == email)
