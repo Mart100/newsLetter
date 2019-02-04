@@ -47,9 +47,11 @@ app.get('/update', async (req, res, next) => {
 })
 
 // listen for unsubscribe
-app.get('/unsubscribe', (req, res, next) => {
+app.get('/unsubscribe', async (req, res, next) => {
   let token = req.url.split('?')[1]
   database.removeEmail(token)
+  let email = await database.getEmailByToken(token)
+  res.send('Successfully unsubscribed <'+email+'>')
 })
 
 
