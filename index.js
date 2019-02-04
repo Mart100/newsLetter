@@ -20,7 +20,7 @@ app.get('/email', async (req, res, next) => {
   `
   // check if email givin is an actual email
   let re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-  if(re.test(email) == false) return res.send('NOT_EMAIL')
+  if(re.test(email) == false) return res.send('INVALID_EMAIL')
 
 
   // check if email is already in database
