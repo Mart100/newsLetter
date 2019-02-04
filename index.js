@@ -22,6 +22,7 @@ app.get('/email', async (req, res, next) => {
   if(getToken == undefined) {
     database.addEmail(email)
     mailing.sendEmail(email, text, nodemailer)
+    res.send('SUCCESS')
   }
   else console.log('ERR DUPLICATE EMAIL: <'+email+'>')
 })
