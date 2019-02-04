@@ -87,8 +87,8 @@ function sendEmail(email, text) {
     from: '"MartBot" <Martssitebot@gmail.com>', // sender address
     to: email, // list of receivers
     subject: 'Hello ✔', // Subject line
-    text: mailText, // plain text body
-    html: mailText // html body
+    text: text, // plain text body
+    html: text // html body
   };
 
   // send mail with defined transport object
