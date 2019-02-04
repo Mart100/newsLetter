@@ -80,7 +80,7 @@ function sendEmail(email, text) {
     }
   })
 
-  text.push(`<a href="https://news-letter.herokuapp.com/unsubscribe?${email}">Click here to unsubscribe</a>`)
+  text += (`<a href="https://news-letter.herokuapp.com/unsubscribe?${email}">Click here to unsubscribe</a>`)
 
   // mail Options
   let mailOptions = {
