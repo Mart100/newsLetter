@@ -75,7 +75,7 @@ function sendEmail(email, text) {
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: process.env.mailUser,
+      user: 'martssitebot@gmail.com',
       pass: process.env.mailPass
     }
   })
