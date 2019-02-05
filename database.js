@@ -29,7 +29,7 @@ module.exports = {
     {
       "type": "service_account",
       "project_id": "mart-c2dcf",
-      "private_key_id": "6413f36497feb08299a8a3c2f060f3e3be739772",
+      "private_key_id": ${private_key_id},
       "private_key": "${private_key}",
       "client_email": "firebase-adminsdk-p8dxi@mart-c2dcf.iam.gserviceaccount.com",
       "client_id": "106912927001311688105",

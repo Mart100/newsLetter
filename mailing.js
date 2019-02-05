@@ -11,8 +11,9 @@ module.exports = {
       }
     })
 
+    // add unsubscribe link
     let token = await database.getTokenWithEmail(email)
-    text += (`<a href="https://news-letter.herokuapp.com/unsubscribe?${token}">Click here to unsubscribe</a>`)
+    text += (`<br><br><a href="https://news-letter.herokuapp.com/unsubscribe?${token}">Click here to unsubscribe</a>`)
 
     // mail Options
     let mailOptions = {
