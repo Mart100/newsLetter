@@ -24,13 +24,13 @@ module.exports = {
     let emails = await this.getEmails()
     return Object.keys(emails).find(key => emails[key] == email)
   },
-  connect(admin, private_key) {
+  connect(admin, env) {
     var serviceAccount = JSON.parse(`
     {
       "type": "service_account",
       "project_id": "mart-c2dcf",
-      "private_key_id": ${private_key_id},
-      "private_key": "${private_key}",
+      "private_key_id": "${env.private_key_id}",
+      "private_key": "${env.private_key}",
       "client_email": "firebase-adminsdk-p8dxi@mart-c2dcf.iam.gserviceaccount.com",
       "client_id": "106912927001311688105",
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",

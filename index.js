@@ -67,7 +67,7 @@ app.listen(process.env.PORT || port, () => {
   console.log('Server started')
 })
 
-database.connect(admin, process.env.private_key)
+database.connect(admin, process.env)
 
 
 /*
