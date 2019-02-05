@@ -38,7 +38,7 @@ app.get('/email', async (req, res, next) => {
 app.get('/update', async (req, res, next) => {
   let data = req.url.split('?')[1]
   let password = data.split('&')[0].replace('password=', '').trim()
-  let text = data.split('&')[1].replace('text=', '')
+  let text = data.split('&')[1].replace('html=', '')
 
   // If password is correct. Send emails
   if(password == process.env.PASSWORD.trim()) {
@@ -77,5 +77,5 @@ new email
 $.get('http://127.0.0.1:3100/email', 'martvanenck1@gmail.com')
 
 update
-$.get('http://127.0.0.1:3100/update', {'password': 'password', 'text': 'text'})
+$.get('http://127.0.0.1:3100/update', {'password': 'password', 'html': 'text'})
 */
