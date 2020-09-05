@@ -16,7 +16,7 @@ app.get('/email', async (req, res, next) => {
   let text = `
   Hello,<br><br>
   Thanks for subscribing to my newsletter!<br> From now on you will receive a new email everytime I post a new project / have a big update on a project.<br>
-  If you did not signup for this at <a href="http://martve.site">http://martve.site</a> please click the link below to unsubscribe
+  If you did not signup for this at <a href="https://martvenck.com">https://martvenck.com</a> please click the link below to unsubscribe
   `
   // check if email givin is an actual email
   let re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
